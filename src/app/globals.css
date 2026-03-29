@@ -1,38 +1,41 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-sand-50: #faf8f5;
-  --color-sand-100: #f3efe8;
-  --color-sand-200: #e8e0d4;
-  --color-sand-300: #d4c8b5;
-  --color-sand-400: #bfa98f;
-  --color-sand-500: #a78b6b;
-  --color-sand-600: #8f7358;
-  --color-sand-700: #755c46;
-  --color-sand-800: #5e4a39;
-  --color-sand-900: #4a3b2e;
+  /* Slate — cool neutral (replaces warm sand) */
+  --color-sand-50:  #f8fafc;
+  --color-sand-100: #f1f5f9;
+  --color-sand-200: #e2e8f0;
+  --color-sand-300: #cbd5e1;
+  --color-sand-400: #94a3b8;
+  --color-sand-500: #64748b;
+  --color-sand-600: #475569;
+  --color-sand-700: #334155;
+  --color-sand-800: #1e293b;
+  --color-sand-900: #0f172a;
 
-  --color-terracotta-50: #fdf5f0;
-  --color-terracotta-100: #fbe8db;
-  --color-terracotta-200: #f6cdb5;
-  --color-terracotta-300: #f0a985;
-  --color-terracotta-400: #e88453;
-  --color-terracotta-500: #e06830;
-  --color-terracotta-600: #d15125;
-  --color-terracotta-700: #ae3d1f;
-  --color-terracotta-800: #8b3320;
-  --color-terracotta-900: #712d1e;
+  /* Blue — primary accent (replaces terracotta) */
+  --color-terracotta-50:  #eff6ff;
+  --color-terracotta-100: #dbeafe;
+  --color-terracotta-200: #bfdbfe;
+  --color-terracotta-300: #93c5fd;
+  --color-terracotta-400: #60a5fa;
+  --color-terracotta-500: #3b82f6;
+  --color-terracotta-600: #2563eb;
+  --color-terracotta-700: #1d4ed8;
+  --color-terracotta-800: #1e40af;
+  --color-terracotta-900: #1e3a8a;
 
-  --color-ocean-50: #f0f7fa;
-  --color-ocean-100: #daeef5;
-  --color-ocean-200: #b9dde9;
-  --color-ocean-300: #88c4d9;
-  --color-ocean-400: #4fa3c1;
-  --color-ocean-500: #3488a6;
-  --color-ocean-600: #2d6d8c;
-  --color-ocean-700: #2a5972;
-  --color-ocean-800: #294b5f;
-  --color-ocean-900: #264050;
+  /* Teal — secondary accent (replaces ocean) */
+  --color-ocean-50:  #f0fdfa;
+  --color-ocean-100: #ccfbf1;
+  --color-ocean-200: #99f6e4;
+  --color-ocean-300: #5eead4;
+  --color-ocean-400: #2dd4bf;
+  --color-ocean-500: #14b8a6;
+  --color-ocean-600: #0d9488;
+  --color-ocean-700: #0f766e;
+  --color-ocean-800: #115e59;
+  --color-ocean-900: #134e4a;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
