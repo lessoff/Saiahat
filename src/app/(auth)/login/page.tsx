@@ -34,7 +34,6 @@ export default function LoginPage() {
     }
 
     router.push(redirect);
-    router.refresh();
   }
 
   return (

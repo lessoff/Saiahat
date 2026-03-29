@@ -1,16 +1,8 @@
 import Link from "next/link";
 import { Mountain } from "lucide-react";
-import { getUser } from "@/lib/auth/get-user";
-import { UserMenu } from "./user-menu";
+import { NavbarAuth } from "./navbar-auth";
 
-export async function Navbar() {
-  let user = null;
-  try {
-    user = await getUser();
-  } catch {
-    // DB not connected yet — show unauthenticated navbar
-  }
-
+export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-sand-200 bg-white/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -41,20 +33,7 @@ export async function Navbar() {
             About us
           </Link>
 
-          {user ? (
-            <UserMenu
-              name={user.name}
-              email={user.email}
-              isAdmin={user.role === "admin"}
-            />
-          ) : (
-            <Link
-              href="/login"
-              className="inline-flex h-9 items-center rounded-full bg-terracotta-500 px-4 text-sm font-medium text-white transition-colors hover:bg-terracotta-600"
-            >
-              Sign In
-            </Link>
-          )}
+          <NavbarAuth />
         </div>
       </nav>
     </header>

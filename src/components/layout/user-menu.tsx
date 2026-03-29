@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { User, LogOut, Heart, BookOpen, Shield } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -15,7 +14,6 @@ interface UserMenuProps {
 export function UserMenu({ name, email, isAdmin }: UserMenuProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -30,8 +28,7 @@ export function UserMenu({ name, email, isAdmin }: UserMenuProps) {
   async function handleLogout() {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
+    window.location.href = "/";
   }
 
   const displayName = name || email.split("@")[0];
