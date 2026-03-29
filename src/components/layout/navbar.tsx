@@ -28,6 +28,18 @@ export async function Navbar() {
           >
             Tours
           </Link>
+          <Link
+            href="/community"
+            className="text-sm font-medium text-sand-600 transition-colors hover:text-terracotta-500"
+          >
+            Community
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium text-sand-600 transition-colors hover:text-terracotta-500"
+          >
+            About us
+          </Link>
 
           {user ? (
             <UserMenu
