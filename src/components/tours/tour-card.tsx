@@ -16,8 +16,6 @@ interface TourCardProps {
   images: string[];
   maxGroupSize: number | null;
   isFavorited?: boolean;
-  isLoggedIn?: boolean;
-  onToggleFavorite?: (tourId: number) => void;
 }
 
 const difficultyColors: Record<string, string> = {
@@ -36,20 +34,33 @@ export function TourCard({
   images,
   maxGroupSize,
   isFavorited = false,
-  isLoggedIn = false,
-  onToggleFavorite,
 }: TourCardProps) {
   const [favorited, setFavorited] = useState(isFavorited);
+  const [loading, setLoading] = useState(false);
 
-  function handleFavorite(e: React.MouseEvent) {
+  async function handleFavorite(e: React.MouseEvent) {
     e.preventDefault();
     e.stopPropagation();
-    if (!isLoggedIn) {
+    if (loading) return;
+    setLoading(true);
+
+    const res = await fetch("/api/favorites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tourId: id }),
+    });
+
+    if (res.status === 401) {
       window.location.href = "/login";
       return;
     }
-    setFavorited(!favorited);
-    onToggleFavorite?.(id);
+
+    if (res.ok) {
+      const data = await res.json();
+      setFavorited(data.favorited);
+    }
+
+    setLoading(false);
   }
 
   const imageUrl = images[0] || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800";
@@ -84,10 +95,11 @@ export function TourCard({
             {/* Heart button */}
             <button
               onClick={handleFavorite}
-              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white"
+              disabled={loading}
+              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white disabled:opacity-60"
             >
               <Heart
-                className={`h-4 w-4 ${
+                className={`h-4 w-4 transition-colors ${
                   favorited
                     ? "fill-terracotta-500 text-terracotta-500"
                     : "text-sand-600"

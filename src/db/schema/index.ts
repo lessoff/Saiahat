@@ -4,6 +4,7 @@ import { tours } from "./tours";
 import { bookings } from "./bookings";
 import { favorites } from "./favorites";
 import { reviews } from "./reviews";
+import { communityPosts } from "./community-posts";
 
 // Re-export all tables
 export { users } from "./users";
@@ -11,12 +12,14 @@ export { tours } from "./tours";
 export { bookings } from "./bookings";
 export { favorites } from "./favorites";
 export { reviews } from "./reviews";
+export { communityPosts } from "./community-posts";
 
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   bookings: many(bookings),
   favorites: many(favorites),
   reviews: many(reviews),
+  communityPosts: many(communityPosts),
 }));
 
 export const toursRelations = relations(tours, ({ many }) => ({
@@ -55,5 +58,12 @@ export const reviewsRelations = relations(reviews, ({ one }) => ({
   tour: one(tours, {
     fields: [reviews.tourId],
     references: [tours.id],
+  }),
+}));
+
+export const communityPostsRelations = relations(communityPosts, ({ one }) => ({
+  user: one(users, {
+    fields: [communityPosts.userId],
+    references: [users.id],
   }),
 }));

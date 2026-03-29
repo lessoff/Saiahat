@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import { getUser } from "@/lib/auth/get-user";
+import { createClient } from "@/lib/supabase/server";
 import { db } from "@/db";
 import { favorites } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
-  const user = await getUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -24,12 +25,10 @@ export async function POST(request: Request) {
     .limit(1);
 
   if (existing) {
-    // Unfavorite
     await db.delete(favorites).where(eq(favorites.id, existing.id));
     return NextResponse.json({ favorited: false });
   }
 
-  // Favorite
   await db.insert(favorites).values({ userId: user.id, tourId });
   return NextResponse.json({ favorited: true });
 }
