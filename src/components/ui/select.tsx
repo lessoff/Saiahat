@@ -1,0 +1,31 @@
+import { SelectHTMLAttributes, forwardRef } from "react";
+
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  error?: string;
+}
+
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(
+  ({ className = "", label, error, id, children, ...props }, ref) => {
+    return (
+      <div className="space-y-1">
+        {label && (
+          <label htmlFor={id} className="block text-sm font-medium text-sand-700">
+            {label}
+          </label>
+        )}
+        <select
+          ref={ref}
+          id={id}
+          className={`w-full rounded-xl border border-sand-300 bg-white px-3 py-2 text-sm text-sand-900 transition-colors focus:border-terracotta-500 focus:outline-none focus:ring-2 focus:ring-terracotta-500/20 ${error ? "border-red-400" : ""} ${className}`}
+          {...props}
+        >
+          {children}
+        </select>
+        {error && <p className="text-sm text-red-500">{error}</p>}
+      </div>
+    );
+  }
+);
+
+Select.displayName = "Select";

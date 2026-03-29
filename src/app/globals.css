@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-sand-50: #faf8f5;
+  --color-sand-100: #f3efe8;
+  --color-sand-200: #e8e0d4;
+  --color-sand-300: #d4c8b5;
+  --color-sand-400: #bfa98f;
+  --color-sand-500: #a78b6b;
+  --color-sand-600: #8f7358;
+  --color-sand-700: #755c46;
+  --color-sand-800: #5e4a39;
+  --color-sand-900: #4a3b2e;
+
+  --color-terracotta-50: #fdf5f0;
+  --color-terracotta-100: #fbe8db;
+  --color-terracotta-200: #f6cdb5;
+  --color-terracotta-300: #f0a985;
+  --color-terracotta-400: #e88453;
+  --color-terracotta-500: #e06830;
+  --color-terracotta-600: #d15125;
+  --color-terracotta-700: #ae3d1f;
+  --color-terracotta-800: #8b3320;
+  --color-terracotta-900: #712d1e;
+
+  --color-ocean-50: #f0f7fa;
+  --color-ocean-100: #daeef5;
+  --color-ocean-200: #b9dde9;
+  --color-ocean-300: #88c4d9;
+  --color-ocean-400: #4fa3c1;
+  --color-ocean-500: #3488a6;
+  --color-ocean-600: #2d6d8c;
+  --color-ocean-700: #2a5972;
+  --color-ocean-800: #294b5f;
+  --color-ocean-900: #264050;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-sand-50);
+  color: var(--color-sand-900);
+  font-family: var(--font-sans);
+}
