@@ -29,7 +29,7 @@ export function Hero() {
           Discover Kazakhstan
         </motion.p>
 
-        <h1 className="mb-6 text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+        <h1 className="mb-6 text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl whitespace-nowrap">
           <Typewriter
             text="Explore Smarter, Travel Nicer."
             delay={0.8}
