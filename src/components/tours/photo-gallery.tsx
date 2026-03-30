@@ -21,27 +21,49 @@ export function PhotoGallery({ images, title }: PhotoGalleryProps) {
     );
   }
 
+  const [first, ...rest] = images;
+
   return (
     <>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {images.map((img, i) => (
-          <button
-            key={i}
-            onClick={() => setLightboxIndex(i)}
-            className={`relative overflow-hidden rounded-2xl ${
-              i === 0 && images.length > 1 ? "sm:col-span-2 aspect-[16/9]" : "aspect-[4/3]"
-            }`}
+      <div className="space-y-2">
+        {/* First image — full width */}
+        <button
+          onClick={() => setLightboxIndex(0)}
+          className="relative w-full overflow-hidden rounded-2xl aspect-[16/9]"
+        >
+          <Image
+            src={first}
+            alt={`${title} photo 1`}
+            fill
+            className="object-cover transition-transform duration-300 hover:scale-105"
+            sizes="100vw"
+            priority
+          />
+        </button>
+
+        {/* Remaining images — same total width, equal smaller tiles */}
+        {rest.length > 0 && (
+          <div
+            className="grid gap-2"
+            style={{ gridTemplateColumns: `repeat(${Math.min(rest.length, 4)}, 1fr)` }}
           >
-            <Image
-              src={img}
-              alt={`${title} photo ${i + 1}`}
-              fill
-              className="object-cover transition-transform duration-300 hover:scale-105"
-              sizes={i === 0 ? "100vw" : "50vw"}
-              priority={i === 0}
-            />
-          </button>
-        ))}
+            {rest.map((img, i) => (
+              <button
+                key={i + 1}
+                onClick={() => setLightboxIndex(i + 1)}
+                className="relative overflow-hidden rounded-2xl aspect-[4/3]"
+              >
+                <Image
+                  src={img}
+                  alt={`${title} photo ${i + 2}`}
+                  fill
+                  className="object-cover transition-transform duration-300 hover:scale-105"
+                  sizes="25vw"
+                />
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Lightbox */}
