@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { getUser } from "@/lib/auth/get-user";
 import { db } from "@/db";
 import { tours } from "@/db/schema";
@@ -33,6 +34,8 @@ export async function POST(request: Request) {
       images: parsed.data.images,
     })
     .returning();
+
+  revalidateTag("tours");
 
   return NextResponse.json({ tour }, { status: 201 });
 }

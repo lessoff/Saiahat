@@ -1,38 +1,8 @@
-export const dynamic = "force-dynamic";
-
-import { db } from "@/db";
-import { communityPosts, users } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { getCommunityPosts } from "@/lib/queries/community";
 import { CommunityFeed } from "@/components/community/community-feed";
-import type { Post } from "@/components/community/post-card";
 
 export default async function CommunityPage() {
-  let posts: Post[] = [];
-
-  try {
-    const rows = await db
-      .select({
-        id: communityPosts.id,
-        content: communityPosts.content,
-        mediaUrls: communityPosts.mediaUrls,
-        createdAt: communityPosts.createdAt,
-        user: {
-          id: users.id,
-          name: users.name,
-          avatarUrl: users.avatarUrl,
-        },
-      })
-      .from(communityPosts)
-      .innerJoin(users, eq(communityPosts.userId, users.id))
-      .orderBy(desc(communityPosts.createdAt));
-
-    posts = rows.map((r) => ({
-      ...r,
-      createdAt: r.createdAt.toISOString(),
-    }));
-  } catch {
-    // DB unavailable — show empty feed
-  }
+  const posts = await getCommunityPosts();
 
   return (
     <div className="min-h-screen bg-sand-50 py-12">

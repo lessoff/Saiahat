@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { db } from "@/db";
 import { communityPosts, users } from "@/db/schema";
@@ -62,6 +63,8 @@ export async function POST(request: Request) {
     .from(communityPosts)
     .innerJoin(users, eq(communityPosts.userId, users.id))
     .where(eq(communityPosts.id, post.id));
+
+  revalidateTag("community-posts");
 
   return NextResponse.json(full, { status: 201 });
 }

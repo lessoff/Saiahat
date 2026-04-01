@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { db } from "@/db";
-import { tours, reviews, users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { tours } from "@/db/schema";
+import { getTourById } from "@/lib/queries/tours";
 import { getUser } from "@/lib/auth/get-user";
 import { PhotoGallery } from "@/components/tours/photo-gallery";
 import { TourInfo } from "@/components/tours/tour-info";
@@ -13,21 +13,22 @@ interface TourDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
+export async function generateStaticParams() {
+  const allTours = await db.select({ id: tours.id }).from(tours);
+  return allTours.map((t) => ({ id: String(t.id) }));
+}
+
 export async function generateMetadata({
   params,
 }: TourDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const [tour] = await db
-    .select({ title: tours.title, description: tours.description })
-    .from(tours)
-    .where(eq(tours.id, parseInt(id)))
-    .limit(1);
+  const result = await getTourById(parseInt(id));
 
-  if (!tour) return { title: "Tour Not Found" };
+  if (!result) return { title: "Tour Not Found" };
 
   return {
-    title: `${tour.title} — Saiahat`,
-    description: tour.description.slice(0, 160),
+    title: `${result.tour.title} — Saiahat`,
+    description: result.tour.description.slice(0, 160),
   };
 }
 
@@ -37,30 +38,11 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
 
   if (isNaN(tourId)) notFound();
 
-  const [tour] = await db
-    .select()
-    .from(tours)
-    .where(eq(tours.id, tourId))
-    .limit(1);
+  const result = await getTourById(tourId);
 
-  if (!tour) notFound();
+  if (!result) notFound();
 
-  const tourReviews = await db
-    .select({
-      id: reviews.id,
-      rating: reviews.rating,
-      comment: reviews.comment,
-      photos: reviews.photos,
-      createdAt: reviews.createdAt,
-      user: {
-        name: users.name,
-        avatarUrl: users.avatarUrl,
-      },
-    })
-    .from(reviews)
-    .innerJoin(users, eq(reviews.userId, users.id))
-    .where(eq(reviews.tourId, tourId))
-    .orderBy(reviews.createdAt);
+  const { tour, reviews: tourReviews } = result;
 
   let currentUser = null;
   try {
