@@ -61,6 +61,8 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
                 difficulty={tour.difficulty}
                 images={tour.images}
                 maxGroupSize={tour.maxGroupSize}
+                avgRating={tour.avgRating}
+                reviewCount={tour.reviewCount}
               />
             ))}
           </div>

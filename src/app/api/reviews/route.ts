@@ -41,6 +41,8 @@ export async function POST(request: Request) {
 
   revalidateTag(`tour-reviews-${parsed.data.tourId}`);
   revalidateTag(`tour-${parsed.data.tourId}`);
+  revalidateTag("tours-list");
+  revalidateTag("tours-featured");
 
   return NextResponse.json(
     {

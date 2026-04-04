@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, MapPin, Clock, Users } from "lucide-react";
+import { Heart, MapPin, Clock, Users, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -15,6 +15,8 @@ interface TourCardProps {
   difficulty: string;
   images: string[];
   maxGroupSize: number | null;
+  avgRating?: number | null;
+  reviewCount?: number;
   isFavorited?: boolean;
 }
 
@@ -33,6 +35,8 @@ export function TourCard({
   difficulty,
   images,
   maxGroupSize,
+  avgRating,
+  reviewCount,
   isFavorited = false,
 }: TourCardProps) {
   const [favorited, setFavorited] = useState(isFavorited);
@@ -114,10 +118,20 @@ export function TourCard({
               {title}
             </h3>
 
-            <div className="mb-3 flex items-center gap-1 text-sm text-sand-500">
+            <div className="mb-2 flex items-center gap-1 text-sm text-sand-500">
               <MapPin className="h-3.5 w-3.5" />
               <span className="line-clamp-1">{location}</span>
             </div>
+
+            {avgRating != null ? (
+              <div className="mb-2 flex items-center gap-1 text-xs">
+                <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                <span className="font-medium text-sand-800">{avgRating.toFixed(1)}</span>
+                <span className="text-sand-400">({reviewCount})</span>
+              </div>
+            ) : (
+              <div className="mb-2 text-xs text-sand-400">No reviews yet</div>
+            )}
 
             <div className="flex items-center gap-3 text-xs text-sand-500">
               <span className="flex items-center gap-1">

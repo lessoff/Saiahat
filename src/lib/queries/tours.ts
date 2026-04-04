@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/db";
 import { tours, reviews, users } from "@/db/schema";
-import { and, asc, desc, eq, gte, ilike, lte, or } from "drizzle-orm";
+import { and, asc, avg, count, desc, eq, gte, ilike, lte, or } from "drizzle-orm";
 
 export interface FilterParams {
   sort?: string;
@@ -17,9 +17,19 @@ function parseDurationDays(duration: string): number {
   return match ? parseInt(match[0], 10) : 0;
 }
 
+const ratingSq = db
+  .select({
+    tourId: reviews.tourId,
+    avgRating: avg(reviews.rating).as("avg_rating"),
+    reviewCount: count(reviews.id).as("review_count"),
+  })
+  .from(reviews)
+  .groupBy(reviews.tourId)
+  .as("rating_sq");
+
 export const getFeaturedTours = unstable_cache(
   async () => {
-    return db
+    const rows = await db
       .select({
         id: tours.id,
         title: tours.title,
@@ -29,10 +39,19 @@ export const getFeaturedTours = unstable_cache(
         difficulty: tours.difficulty,
         images: tours.images,
         maxGroupSize: tours.maxGroupSize,
+        avgRating: ratingSq.avgRating,
+        reviewCount: ratingSq.reviewCount,
       })
       .from(tours)
+      .leftJoin(ratingSq, eq(tours.id, ratingSq.tourId))
       .orderBy(desc(tours.popularityScore))
       .limit(4);
+
+    return rows.map((r) => ({
+      ...r,
+      avgRating: r.avgRating ? parseFloat(r.avgRating) : null,
+      reviewCount: r.reviewCount ?? 0,
+    }));
   },
   ["tours-featured"],
   { tags: ["tours", "tours-featured"], revalidate: 3600 }
@@ -81,13 +100,22 @@ export function getFilteredTours(params: FilterParams) {
           difficulty: tours.difficulty,
           images: tours.images,
           maxGroupSize: tours.maxGroupSize,
+          avgRating: ratingSq.avgRating,
+          reviewCount: ratingSq.reviewCount,
         })
         .from(tours)
+        .leftJoin(ratingSq, eq(tours.id, ratingSq.tourId))
         .orderBy(orderBy);
 
-      const rows = await (conditions.length > 0
+      const rawRows = await (conditions.length > 0
         ? query.where(and(...conditions))
         : query);
+
+      const rows = rawRows.map((r) => ({
+        ...r,
+        avgRating: r.avgRating ? parseFloat(r.avgRating) : null,
+        reviewCount: r.reviewCount ?? 0,
+      }));
 
       if (duration) {
         return rows.filter((tour) => {

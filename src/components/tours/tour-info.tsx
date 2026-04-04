@@ -1,4 +1,4 @@
-import { MapPin, Clock, Users, TrendingUp } from "lucide-react";
+import { MapPin, Clock, Users, TrendingUp, Star } from "lucide-react";
 
 interface TourInfoProps {
   title: string;
@@ -8,6 +8,8 @@ interface TourInfoProps {
   duration: string;
   difficulty: string;
   maxGroupSize: number | null;
+  avgRating?: number | null;
+  reviewCount?: number;
 }
 
 const difficultyColors: Record<string, string> = {
@@ -24,15 +26,26 @@ export function TourInfo({
   duration,
   difficulty,
   maxGroupSize,
+  avgRating,
+  reviewCount,
 }: TourInfoProps) {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-sand-900">{title}</h1>
-          <div className="mt-2 flex items-center gap-1 text-sand-500">
-            <MapPin className="h-4 w-4" />
-            <span>{location}</span>
+          <div className="mt-2 flex items-center gap-3 text-sand-500">
+            <div className="flex items-center gap-1">
+              <MapPin className="h-4 w-4" />
+              <span>{location}</span>
+            </div>
+            {avgRating != null ? (
+              <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <span className="font-medium text-sand-800">{avgRating.toFixed(1)}</span>
+                <span className="text-sm">({reviewCount} review{reviewCount !== 1 ? "s" : ""})</span>
+              </div>
+            ) : null}
           </div>
         </div>
         <div className="text-right">

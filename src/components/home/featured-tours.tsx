@@ -10,6 +10,8 @@ interface Tour {
   difficulty: string;
   images: string[];
   maxGroupSize: number | null;
+  avgRating?: number | null;
+  reviewCount?: number;
 }
 
 interface FeaturedToursProps {
@@ -43,6 +45,8 @@ export function FeaturedTours({ tours }: FeaturedToursProps) {
               difficulty={tour.difficulty}
               images={tour.images}
               maxGroupSize={tour.maxGroupSize}
+              avgRating={tour.avgRating}
+              reviewCount={tour.reviewCount}
             />
           ))}
         </div>

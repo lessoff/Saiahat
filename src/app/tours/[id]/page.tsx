@@ -44,6 +44,11 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
 
   const { tour, reviews: tourReviews } = result;
 
+  const avgRating =
+    tourReviews.length > 0
+      ? tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length
+      : null;
+
   let currentUser = null;
   try {
     currentUser = await getUser();
@@ -65,6 +70,8 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
             duration={tour.duration}
             difficulty={tour.difficulty}
             maxGroupSize={tour.maxGroupSize}
+            avgRating={avgRating}
+            reviewCount={tourReviews.length}
           />
           <ReviewsSection
             tourId={tour.id}
