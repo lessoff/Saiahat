@@ -7,6 +7,7 @@ import { PhotoGallery } from "@/components/tours/photo-gallery";
 import { TourInfo } from "@/components/tours/tour-info";
 import { BookingForm } from "@/components/tours/booking-form";
 import { ReviewsSection } from "@/components/tours/reviews-section";
+import { TourMap } from "@/components/tours/tour-map";
 import type { Metadata } from "next";
 
 interface TourDetailPageProps {
@@ -73,6 +74,7 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
             avgRating={avgRating}
             reviewCount={tourReviews.length}
           />
+          <TourMap location={tour.location} />
           <ReviewsSection
             tourId={tour.id}
             reviews={tourReviews}
