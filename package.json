@@ -12,11 +12,13 @@
     "db:seed": "npx tsx src/db/seed.ts"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.100.1",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.38.0",
+    "groq-sdk": "^1.1.2",
     "lucide-react": "^1.7.0",
     "next": "16.2.1",
     "postgres": "^3.4.8",
