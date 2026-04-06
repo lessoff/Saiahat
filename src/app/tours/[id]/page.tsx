@@ -1,13 +1,14 @@
 import { notFound } from "next/navigation";
 import { db } from "@/db";
 import { tours } from "@/db/schema";
-import { getTourById } from "@/lib/queries/tours";
+import { getTourById, getSimilarTours } from "@/lib/queries/tours";
 import { getUser } from "@/lib/auth/get-user";
 import { PhotoGallery } from "@/components/tours/photo-gallery";
 import { TourInfo } from "@/components/tours/tour-info";
 import { BookingForm } from "@/components/tours/booking-form";
 import { ReviewsSection } from "@/components/tours/reviews-section";
 import { TourMap } from "@/components/tours/tour-map";
+import { SimilarTours } from "@/components/tours/similar-tours";
 import type { Metadata } from "next";
 
 interface TourDetailPageProps {
@@ -45,6 +46,8 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
 
   const { tour, reviews: tourReviews } = result;
 
+  const similarTours = await getSimilarTours(tourId, tour.difficulty);
+
   const avgRating =
     tourReviews.length > 0
       ? tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length
@@ -80,6 +83,7 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
             reviews={tourReviews}
             isLoggedIn={!!currentUser}
           />
+          <SimilarTours tours={similarTours} difficulty={tour.difficulty} />
         </div>
 
         {/* Right column: booking form */}

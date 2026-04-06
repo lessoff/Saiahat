@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { db } from "@/db";
 import { tours, reviews, users } from "@/db/schema";
-import { and, asc, avg, count, desc, eq, gte, ilike, lte, or } from "drizzle-orm";
+import { and, asc, avg, count, desc, eq, gte, ilike, lte, ne, or } from "drizzle-orm";
 
 export interface FilterParams {
   sort?: string;
@@ -139,6 +139,44 @@ export function getFilteredTours(params: FilterParams) {
       maxPrice ?? "",
     ],
     { tags: ["tours", "tours-list"], revalidate: 300 }
+  )();
+}
+
+export function getSimilarTours(currentId: number, difficulty: string) {
+  return unstable_cache(
+    async () => {
+      const rows = await db
+        .select({
+          id: tours.id,
+          title: tours.title,
+          location: tours.location,
+          price: tours.price,
+          duration: tours.duration,
+          difficulty: tours.difficulty,
+          images: tours.images,
+          maxGroupSize: tours.maxGroupSize,
+          avgRating: ratingSq.avgRating,
+          reviewCount: ratingSq.reviewCount,
+        })
+        .from(tours)
+        .leftJoin(ratingSq, eq(tours.id, ratingSq.tourId))
+        .where(
+          and(
+            eq(tours.difficulty, difficulty as "easy" | "moderate" | "hard"),
+            ne(tours.id, currentId)
+          )
+        )
+        .orderBy(desc(tours.popularityScore))
+        .limit(3);
+
+      return rows.map((r) => ({
+        ...r,
+        avgRating: r.avgRating ? parseFloat(r.avgRating) : null,
+        reviewCount: r.reviewCount ?? 0,
+      }));
+    },
+    [`similar-tours-${currentId}-${difficulty}`],
+    { tags: ["tours"], revalidate: 3600 }
   )();
 }
 

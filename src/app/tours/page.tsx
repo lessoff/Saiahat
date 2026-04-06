@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getFilteredTours } from "@/lib/queries/tours";
-import { TourCard } from "@/components/tours/tour-card";
 import { FilterControls } from "@/components/tours/filter-controls";
+import { ToursContent } from "@/components/tours/tours-content";
 import { FadeIn } from "@/components/motion/fade-in";
 
 interface ToursPageProps {
@@ -45,28 +45,7 @@ export default async function ToursPage({ searchParams }: ToursPageProps) {
       </div>
 
       {allTours.length > 0 ? (
-        <>
-          <p className="mb-4 text-sm text-sand-400">
-            {allTours.length} tour{allTours.length !== 1 ? "s" : ""} found
-          </p>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {allTours.map((tour) => (
-              <TourCard
-                key={tour.id}
-                id={tour.id}
-                title={tour.title}
-                location={tour.location}
-                price={tour.price}
-                duration={tour.duration}
-                difficulty={tour.difficulty}
-                images={tour.images}
-                maxGroupSize={tour.maxGroupSize}
-                avgRating={tour.avgRating}
-                reviewCount={tour.reviewCount}
-              />
-            ))}
-          </div>
-        </>
+        <ToursContent tours={allTours} />
       ) : (
         <div className="py-20 text-center">
           <p className="text-lg text-sand-500">No tours match your filters.</p>
