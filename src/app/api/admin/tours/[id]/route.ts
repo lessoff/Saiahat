@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { getUser } from "@/lib/auth/get-user";
 import { db } from "@/db";
 import { tours } from "@/db/schema";
@@ -52,8 +52,9 @@ export async function PUT(request: Request, { params }: RouteParams) {
     return NextResponse.json({ error: "Tour not found" }, { status: 404 });
   }
 
-  revalidatePath("/tours");
-  revalidatePath(`/tours/${tourId}`);
+  revalidateTag(`tour-${tourId}`);
+  revalidateTag("tours-list");
+  revalidateTag("tours-featured");
 
   return NextResponse.json({ tour });
 }
@@ -72,7 +73,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
 
   await db.delete(tours).where(eq(tours.id, tourId));
 
-  revalidatePath("/tours");
+  revalidateTag("tours");
 
   return NextResponse.json({ success: true });
 }
