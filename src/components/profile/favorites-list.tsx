@@ -47,7 +47,6 @@ export function FavoritesList({ tours }: FavoritesListProps) {
           images={tour.images}
           maxGroupSize={tour.maxGroupSize}
           isFavorited
-          isLoggedIn
         />
       ))}
     </div>
