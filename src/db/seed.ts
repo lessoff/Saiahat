@@ -1,4 +1,5 @@
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { tours } from "./schema/tours";
@@ -11,7 +12,7 @@ const seedTours = [
   {
     title: "Charyn Canyon Adventure",
     description:
-      "Explore the breathtaking Charyn Canyon, often called the 'Grand Canyon's little brother.' Trek through the Valley of Castles, marvel at dramatic red sandstone formations carved by millions of years of erosion, and enjoy a picnic lunch by the Charyn River. This full-day tour includes comfortable transport from Almaty, an experienced guide, and unforgettable photo opportunities.",
+      "Charyn Canyon sits about 200 kilometers east of Almaty, cutting through the steppe in a way that catches you completely off guard. The Valley of Castles section is where most people spend their time: walls of red and orange sandstone rising up to 300 meters, shaped over millions of years into columns, arches, and ridges that cast long shadows by late afternoon. The trail runs along the canyon floor beside the Charyn River, where the air is noticeably cooler and the sound of moving water carries through the rocks. We stop for lunch on the riverbank before climbing back up to the rim. Transport from Almaty is included, and the guide knows both the geology and the local folklore well enough to make the walk feel like more than just a sightseeing loop.",
     price: "45000",
     location: "Charyn Canyon, Almaty Region",
     duration: "1 day",
@@ -26,7 +27,7 @@ const seedTours = [
   {
     title: "Kolsai Lakes Trek",
     description:
-      "Discover the stunning Kolsai Lakes, known as the 'Pearls of the Northern Tien Shan.' This two-day trek takes you through alpine meadows and dense spruce forests to three pristine mountain lakes, each more beautiful than the last. Camp under the stars at 2,500m altitude and wake up to mirror-like reflections of snow-capped peaks.",
+      "The Kolsai Lakes are three separate bodies of water stacked up the same valley in the northern Tien Shan, each one sitting higher and quieter than the last. The trail winds through spruce forest that stays dense enough to muffle the wind, opening up at each lake into a wide alpine clearing. The lower lake is the largest and most visited. The middle one, reached after a solid two-hour climb, tends to hold a reflection of the surrounding peaks on calm mornings. We camp at around 2,500 meters, which means cold nights and no light pollution worth mentioning. Day two takes you back down at a pace that lets you stop where you want. Group size is kept small so the trail stays peaceful.",
     price: "85000",
     location: "Kolsai Lakes, Almaty Region",
     duration: "2 days",
@@ -41,7 +42,7 @@ const seedTours = [
   {
     title: "Big Almaty Lake Day Trip",
     description:
-      "Visit the jewel of the Tien Shan mountains — Big Almaty Lake, a stunning alpine reservoir at 2,511m altitude. The lake's vivid turquoise color changes with the seasons, creating a mesmerizing palette from deep blue to emerald green. Enjoy scenic viewpoints, learn about the lake's importance to Almaty's water supply, and breathe in the crisp mountain air.",
+      "Big Almaty Lake sits at 2,511 meters, less than an hour's drive from the city center, and the color of the water genuinely changes depending on the time of year. In early summer it runs a deep milky blue from glacial melt. By August it shifts toward green. The lake feeds Almaty's water supply, which is part of why the surrounding area is protected and relatively undeveloped. The viewpoints above the shoreline give you a wide angle on the reservoir and the Tien Shan peaks behind it. This is a half-day trip that works well even for people who are not keen on long hikes. The altitude is noticeable if you came from sea level recently, so take the first stretch slowly.",
     price: "25000",
     location: "Big Almaty Lake, Almaty",
     duration: "Half day",
@@ -56,7 +57,7 @@ const seedTours = [
   {
     title: "Altyn-Emel National Park Safari",
     description:
-      "Journey through the vast Altyn-Emel National Park, home to the famous Singing Dune, ancient burial mounds, and unique wildlife. This two-day expedition covers the park's key highlights: the 150-meter-high Singing Dune that produces hauntingly beautiful sounds, the Aktau painted mountains with their rainbow-like layers, and the chance to spot rare Przewalski's horses in the wild.",
+      "Altyn-Emel covers over 450,000 hectares of steppe, desert, and river plain east of Almaty, and most of it sees very few visitors. The Singing Dune is the park's most well-known feature: a 150-meter sand dune that produces a low, resonant hum when the wind catches the surface at the right angle. The Aktau mountains are something else entirely, a series of ridges striped in white, red, green, and grey from mineral deposits laid down over tens of millions of years. We also spend time looking for Przewalski's horses, a breed that was extinct in the wild until a reintroduction program brought them back here in the 1990s. Accommodation is in a small guesthouse inside the park. Two days is enough to cover the main sites without feeling rushed.",
     price: "120000",
     location: "Altyn-Emel, Almaty Region",
     duration: "2 days",
@@ -71,7 +72,7 @@ const seedTours = [
   {
     title: "Turgen Gorge & Waterfalls",
     description:
-      "Hike through the lush Turgen Gorge to discover hidden waterfalls and hot springs. The trail winds through birch and spruce forests, passing the spectacular Bear Waterfall (30m) and the serene Kairak Waterfall. Cool off in natural pools and enjoy a traditional Kazakh lunch prepared over an open fire. A perfect escape from the city.",
+      "Turgen Gorge runs about 100 kilometers east of Almaty and stays green and wet through most of the summer. The trail passes through birch and spruce forest before opening up at the Bear Waterfall, which drops around 30 meters into a basin you can get close enough to feel the spray. A bit further along is Kairak Waterfall, smaller and quieter, with a natural pool that is cold enough to be refreshing in July. Lunch is cooked over an open fire at a rest point in the gorge, traditional Kazakh food that tends to be the highlight of the day for a lot of people. The whole hike is manageable for anyone in reasonable shape and takes most of the day at a relaxed pace.",
     price: "35000",
     location: "Turgen Gorge, Almaty Region",
     duration: "1 day",
@@ -86,7 +87,7 @@ const seedTours = [
   {
     title: "Shymbulak Ski Resort Experience",
     description:
-      "Hit the slopes at Shymbulak, Kazakhstan's premier ski resort nestled in the Zailiyskiy Alatau mountains at 2,260m altitude. Whether you're a beginner or an expert, enjoy world-class runs with stunning mountain panoramas. The package includes equipment rental, lift passes, and a cozy lunch at the resort's mountain restaurant.",
+      "Shymbulak sits at 2,260 meters in the Zailiyskiy Alatau range, about 25 kilometers from central Almaty. The resort has runs suited to every level, from wide beginner slopes near the base to longer steeper descents higher up. On a clear day the views across the range are hard to beat. The package covers lift passes, equipment rental, and lunch at the mountain restaurant, so you do not need to organize anything separately. The season typically runs from November through April, with the best snow conditions in January and February. Group sizes are small, which makes it easier for the guide to adjust the day to everyone's ability.",
     price: "55000",
     location: "Shymbulak, Almaty",
     duration: "1 day",
@@ -101,7 +102,7 @@ const seedTours = [
   {
     title: "Silk Road Heritage Tour",
     description:
-      "Trace the ancient Silk Road through southern Kazakhstan. Visit the UNESCO-listed Mausoleum of Khoja Ahmed Yasawi in Turkestan, explore the ruins of Otrar, and walk through the bustling bazaars of Shymkent. This cultural immersion tour reveals Kazakhstan's rich history as a crossroads of civilizations, complete with traditional music, crafts, and cuisine.",
+      "Southern Kazakhstan was one of the main corridors of the Silk Road for centuries, and the traces of that are still visible if you know where to look. The Mausoleum of Khoja Ahmed Yasawi in Turkestan is the anchor of the tour: a 14th-century structure commissioned by Timur that remains one of the best-preserved examples of Timurid architecture in Central Asia. It was listed as a UNESCO World Heritage Site in 2003. From there we visit the ruins of Otrar, a city that was a significant trading hub before its destruction in the 13th century, and spend time in Shymkent, where the old bazaar still functions as a working market. The four days include traditional meals, visits to local craftspeople, and some evenings with folk music. This is a trip for people interested in history and culture more than physical activity.",
     price: "250000",
     location: "Turkestan & Shymkent",
     duration: "4 days",
@@ -116,7 +117,7 @@ const seedTours = [
   {
     title: "Kaindy Lake & Sunken Forest",
     description:
-      "Visit the ethereal Kaindy Lake, famous for its underwater forest of submerged spruce trees rising from the turquoise water like ghostly sentinels. Formed by a 1911 earthquake that triggered a massive landslide, this natural wonder is one of Kazakhstan's most photographed spots. The tour includes a moderate hike, photography stops, and a visit to nearby Kaindy Gorge.",
+      "Kaindy Lake was formed in 1911 when an earthquake triggered a landslide that dammed the valley and flooded the forest above. The spruce trees that were already growing there did not fall. They are still standing, submerged up to their trunks, with bare grey branches reaching above the surface of the water. In winter the lake freezes and divers have explored the underwater trunks. In summer the turquoise water makes the whole scene look slightly unreal. The hike in takes a couple of hours through the gorge, with several good stopping points along the way. We spend time at the lake itself before continuing into the adjacent Kaindy Gorge, which is less visited and worth the extra walk.",
     price: "65000",
     location: "Kaindy Lake, Almaty Region",
     duration: "1 day",
@@ -131,7 +132,7 @@ const seedTours = [
   {
     title: "Baikonur Cosmodrome Visit",
     description:
-      "Witness history at the Baikonur Cosmodrome, the world's first and largest operational space launch facility. Tour the historic launch pads where Yuri Gagarin began his journey to the stars, visit the space museum, and if timing aligns, watch a real rocket launch. This once-in-a-lifetime experience bridges the vast Kazakh steppe with the cosmos above.",
+      "Baikonur is where the Soviet space program was run from, and a lot of the infrastructure is still in use today. Yuri Gagarin launched from here in 1961. The Buran orbiter is stored here. The launch pads that sent the first satellites into orbit are still standing. The cosmodrome is a restricted site leased by Russia from Kazakhstan, which means access requires coordination and permits arranged in advance. The tour covers the main historical launch pads, the assembly buildings, and the space museum, which holds original hardware and mission artifacts. If a launch happens to be scheduled during your visit, it is possible to watch from the designated viewing area. The surrounding steppe is flat and empty in every direction, which makes the scale of the facility feel even larger than it is.",
     price: "350000",
     location: "Baikonur, Kyzylorda Region",
     duration: "3 days",
@@ -146,7 +147,7 @@ const seedTours = [
   {
     title: "Aksu-Zhabagly Nature Reserve Trek",
     description:
-      "Explore Central Asia's oldest nature reserve, home to rare snow leopards, golden eagles, and over 1,400 plant species including wild tulips. This three-day trek takes you through dramatic gorges, alpine pastures dotted with wildflowers, and ancient petroglyphs. Camp under pristine night skies far from any light pollution and connect with nature in its purest form.",
+      "Aksu-Zhabagly was established in 1926, making it the oldest nature reserve in Central Asia, and it has been largely left alone since. The reserve covers a significant stretch of the western Tien Shan, including deep gorges, high alpine zones, and river valleys. Over 1,400 plant species grow here, including wild Greig's tulips that carpet the lower slopes in April and May. Snow leopards live in the reserve but are rarely seen; golden eagles are more reliable. The three-day trek moves through the Aksu Canyon, which drops around 500 meters to the river, and up into the alpine pastures above the treeline. There are petroglyphs in several locations along the route, left by people who passed through these mountains long before the reserve existed. This is a physically demanding trip with significant elevation gain each day.",
     price: "180000",
     location: "Aksu-Zhabagly, Turkestan Region",
     duration: "3 days",

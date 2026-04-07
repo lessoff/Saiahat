@@ -21,7 +21,8 @@ export function PhotoGallery({ images, title }: PhotoGalleryProps) {
     );
   }
 
-  const [first, ...rest] = images;
+  const [first, ...allRest] = images;
+  const rest = allRest.slice(0, 4);
 
   return (
     <>
