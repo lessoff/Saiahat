@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { getUser } from "@/lib/auth/get-user";
 import { db } from "@/db";
 import { reviews, users } from "@/db/schema";
@@ -39,10 +39,8 @@ export async function POST(request: Request) {
     .where(eq(users.id, user.id))
     .limit(1);
 
-  revalidateTag(`tour-reviews-${parsed.data.tourId}`);
-  revalidateTag(`tour-${parsed.data.tourId}`);
-  revalidateTag("tours-list");
-  revalidateTag("tours-featured");
+  revalidatePath("/tours");
+  revalidatePath(`/tours/${parsed.data.tourId}`);
 
   return NextResponse.json(
     {

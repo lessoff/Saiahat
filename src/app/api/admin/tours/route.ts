@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { getUser } from "@/lib/auth/get-user";
 import { db } from "@/db";
 import { tours } from "@/db/schema";
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     })
     .returning();
 
-  revalidateTag("tours");
+  revalidatePath("/tours");
 
   return NextResponse.json({ tour }, { status: 201 });
 }
